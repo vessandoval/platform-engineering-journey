@@ -33,6 +33,7 @@ jobs:
       - name: Run a multi-line script & Inspect runner
         run: |
           echo Inspect Runner execution,
+          echo "Información del host eje-02"
           echo "Hostname: "
           hostname
           echo "Operating System: "
@@ -41,8 +42,11 @@ jobs:
           pwd
           echo "Workspace: "
           echo "$GITHUB_WORKSPACE"
-          echo "Files:"
+          echo "Información del runner eje-01:"
           ls -la
           git --version
           docker --version
+          echo "Información específica de git eje-03"
+          git log -l
+          git rev-parse HEAD                  
           date
