@@ -47,6 +47,6 @@ jobs:
           git --version
           docker --version
           echo "Información específica de git eje-03"
-          git log -l
+          git log -1
           git rev-parse HEAD                  
           date
