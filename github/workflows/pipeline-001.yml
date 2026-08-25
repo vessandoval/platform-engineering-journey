@@ -1,0 +1,24 @@
+name: CI Pipeline 001
+
+on:
+	push:
+		branches:
+			- '**'
+
+jobs:
+	build:
+		runs-on: ubuntu-latest
+		steps:
+			- name: Checkout repository
+				uses: actions/checkout@v4
+
+			- name: Set up Node.js (optional)
+				uses: actions/setup-node@v4
+				with:
+					node-version: '18'
+
+			- name: Run a simple build step
+				run: |
+					echo "Pipeline triggered by push"
+					echo "Current branch: $GITHUB_REF"
+
