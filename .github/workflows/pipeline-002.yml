@@ -1,0 +1,29 @@
+# This is a pipeline to understand workflows 
+
+name: pipeline-002
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
+  # Allows you to run this workflow manually from the Actions tab
+  workflow_dispatch:
+
+# A workflow run is made up of one or more jobs that can run sequentially or in parallel
+jobs:
+  # This workflow contains a single job called "build"
+  docker-build:
+    runs-on: ubuntu-latest
+    
+    steps:
+      # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
+      - uses: actions/checkout@v4
+
+      - name: Run a command
+        run: docker --version
+
+      # Runs actions to build a docker image
+      - name: Run docker commands
+        run: docker build -t laboratory-03;github-actions ./docker/laboratory-03
