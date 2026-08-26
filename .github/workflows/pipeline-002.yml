@@ -26,4 +26,4 @@ jobs:
 
       # Runs actions to build a docker image
       - name: Run docker commands
-        run: docker build -t ./docker/laboratory-03/laboratory-03;github-actions ./docker/laboratory-03
+        run: docker build -t laboratory-03:github-actions ./docker/laboratory-03
