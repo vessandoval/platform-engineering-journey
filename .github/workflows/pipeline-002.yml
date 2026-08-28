@@ -29,11 +29,13 @@ jobs:
         run: |
             docker build -t laboratory-03:github-actions ./docker/laboratory-03
             docker run -d -p 8080:80 --name laboratory-03 laboratory-03:github-actions
-            - name: Inspect container
+            
+      - name: Inspect container
         run: |
             docker ps
             docker port laboratory-03
             docker logs laboratory-03
+            
       - name: Test container and view status container and process
         run: |
             docker ps
