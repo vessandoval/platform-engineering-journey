@@ -31,9 +31,9 @@ jobs:
             docker run -d -p 8080:80 --name laboratory-03 laboratory-03:github-actions
       - name: Test container and view status container and process
         run: |
-            curl http://localhost:8080
             docker ps
             docker images
+            curl http://localhost:8080
       - name: Run clean environment
         run: |
             docker stop laboratory-03
