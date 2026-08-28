@@ -26,4 +26,16 @@ jobs:
 
       # Runs actions to build a docker image
       - name: Run docker commands
-        run: docker build -t laboratory-03:github-actions ./docker/laboratory-03
+        run: |
+            docker build -t laboratory-03:github-actions ./docker/laboratory-03
+            docker run -d -p 8080:80 --name laboratory-03 laboratory-03:github-actions
+      - name: Test container and view status container and process
+        run: |
+            curl hrrp://localhost:8080
+            docker ps
+            docker images
+      - name: Run clean environment
+        run: |
+            docker stop laboratory-03
+            docker rm
+            
