@@ -33,7 +33,7 @@ jobs:
       # Incorporación de Readiness y Functional Test  
       - name: Readiness check
         run: |
-          for i in {0..10}
+          for i in {0..10}; do
             if curl -fsS http://localhost:8080 > /dev/null; then
               echo "Container is ready"
               exit 0
