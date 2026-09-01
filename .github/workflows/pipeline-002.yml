@@ -36,7 +36,7 @@ jobs:
             docker port laboratory-03
             docker logs laboratory-03
             docker inspect laboratory-03 --format '{{.State.Status}} ExitCode={{.State.ExitCode}} Error={{.State.Error}}'
-      # docker exec laboratory-03 ps aux
+            docker exec laboratory-03 ps aux
             
       - name: Test container and view status container
         run: |
