@@ -51,7 +51,7 @@ jobs:
             response=$(curl -fsS http://localhost:8080)
 
             echo "Response received: "
-            echo $response"
+            echo $response
 
             echo "$response" | grep -q "LAboratory 03"
 
