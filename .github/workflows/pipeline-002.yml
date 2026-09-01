@@ -82,6 +82,7 @@ jobs:
     
       
       - name: Run clean environment
+        if: always()
         run: |
             docker stop laboratory-03
             docker rm laboratory-03
