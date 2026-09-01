@@ -46,8 +46,8 @@ jobs:
           echo "Container did not become ready"
           exit 1
           
-          - name: Functional test
-          run: |
+      - name: Functional test
+        run: |
             response=$(curl -fsS http://localhost:8080)
 
             echo "Response received: "
