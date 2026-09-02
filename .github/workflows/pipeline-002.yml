@@ -58,22 +58,22 @@ jobs:
             echo "$response" | grep -q "LAboratory 03"
             echo "Functional test passed"
             
-            - name: Login to GHCR
-               uses: docker/login-action@v3
-               with:
-                 registry: ghcr.io
-                 username: ${{ github.actor }}
-                 password: ${{ secrets.GITHUB_TOKEN }} 
-                 
-             - name: Tag Docker image
-               run: |
-                 docker tag \
-                   laboratory-03:github-actions \
-                   ghcr.io/vessandoval/laboratory-03:v1.0
-
-              - name: Push Docker image
-                run: |
-                  docker push ghcr.io/vessandoval/laboratory-03:v1.0
+      - name: Login to GHCR
+        uses: docker/login-action@v3
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }} 
+      
+      - name: Tag Docker image
+        run: |
+              docker tag \
+              laboratory-03:github-actions \
+              ghcr.io/vessandoval/laboratory-03:v1.0
+              
+      - name: Push Docker image
+        run: |
+              docker push ghcr.io/vessandoval/laboratory-03:v1.0
       
           
       #- name: Inspect container (ps, port, logs and Inspect)
