@@ -69,11 +69,19 @@ jobs:
         run: |
               docker tag \
               laboratory-03:github-actions \
-              ghcr.io/vessandoval/laboratory-03:v1.0
+              #ghcr.io/vessandoval/laboratory-03:v1.0
               
-      - name: Push Docker image
+              docker tag \
+              laboratory-03:github-actions \
+              ghcr.io/vessandoval/laboratory-03:${{ github.sha }}
+              
+      - name: List tagged images
         run: |
-              docker push ghcr.io/vessandoval/laboratory-03:v1.0
+          docker images | grep laboratory-03 
+                     
+    #  - name: Push Docker image
+    #    run: |
+    #          docker push ghcr.io/vessandoval/laboratory-03:v1.0
       
           
       #- name: Inspect container (ps, port, logs and Inspect)
