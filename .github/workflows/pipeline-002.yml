@@ -71,7 +71,7 @@ jobs:
               laboratory-03:github-actions \
               ghcr.io/vessandoval/laboratory-03:v1.0
 
-              SHORT_SHA=github.sha.substring(0,6)
+              echo "SHORT_SHA=${github.sha::6}" >> $SHORT_SHA
               
               docker tag \
               laboratory-03:github-actions \
