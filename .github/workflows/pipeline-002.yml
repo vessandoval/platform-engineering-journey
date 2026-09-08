@@ -70,12 +70,12 @@ jobs:
               docker tag \
               laboratory-03:github-actions \
               ghcr.io/vessandoval/laboratory-03:v1.0
-
-              echo "SHORT_SHA=$(git rev-parse --short HEAD)" >> $SHORT_SHA
-              
+                      
               docker tag \
               laboratory-03:github-actions \
-              ghcr.io/vessandoval/laboratory-03:${SHORT_SHA}
+              ghcr.io/vessandoval/laboratory-03:${GITHUB_SHA:0:7}
+              
+              #ghcr.io/vessandoval/laboratory-03:${{ github.sha }}
               
       - name: List tagged images
         run: |
