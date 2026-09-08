@@ -71,11 +71,11 @@ jobs:
               laboratory-03:github-actions \
               ghcr.io/vessandoval/laboratory-03:v1.0
 
-              # SHORT_SHA = $ {{ github.sha.substring(0, 6) }}
+              SHORT_SHA=github.sha.substring(0,6)
               
               docker tag \
               laboratory-03:github-actions \
-              ghcr.io/vessandoval/laboratory-03:$ {{ github.sha.substring(0, 6) }}
+              ghcr.io/vessandoval/laboratory-03:${SHORT_SHA}
               
       - name: List tagged images
         run: |
