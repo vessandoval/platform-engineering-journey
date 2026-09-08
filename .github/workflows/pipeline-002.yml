@@ -81,9 +81,10 @@ jobs:
         run: |
           docker images | grep laboratory-03 
                      
-    #  - name: Push Docker image
-    #    run: |
-    #          docker push ghcr.io/vessandoval/laboratory-03:v1.0
+      - name: Push Docker image
+        run: |
+             docker push ghcr.io/vessandoval/laboratory-03:v1.0
+             docker push ghcr.io/vessandoval/laboratory-03:${GITHUB_SHA:0:7}
       
           
       #- name: Inspect container (ps, port, logs and Inspect)
