@@ -1,21 +1,20 @@
-# This is a pipeline to understand workflows 
+# This pipeline is a typical example of a process to generate, test and push a docker container in GitHub Packages.
 
 name: pipeline-002
 
 on:
   push:
     branches: [ "main" ]
-  pull_request:
-    branches: [ "main" ]
-
+    
   # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
 
-# A workflow run is made up of one or more jobs that can run sequentially or in parallel
+# A workflow run is made up of one or more jobs that can run sequentially or in *parallel
 jobs:
-  # This workflow contains a single job called "build"
-  docker-build:
+  # This workflow contains ci phases to build, test and publish a docker container
+  docker-ci:
     runs-on: ubuntu-latest
+    
   # Enabled workflow to read repository and add permissions to publish packs
     permissions: 
       contents: read
@@ -25,24 +24,26 @@ jobs:
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
       - uses: actions/checkout@v4
 
-      - name: Run a command
+      - name: Run command to show Docker version in runner
         run: docker --version
 
-      # Runs actions to build a docker image
-      - name: Run docker commands
+      # Runs actions to build a docker image and run an instance 
+      - name: Build Docker image
         run: |
             docker build -t laboratory-03:github-actions ./docker/laboratory-03
+      
+      - name: Run container
+        run: |
             docker run -d -p 8080:80 --name laboratory-03 laboratory-03:github-actions
       
-      # Incorporación de Readiness y Functional Test  
+      # Set Readiness and Functional Test container 
       - name: Readiness check
         run: |
-          for i in {0..10}; do
+          for i in {1..10}; do
             if curl -fsS http://localhost:8080 > /dev/null; then
               echo "Container is ready"
               exit 0
             fi
-
             echo "Container is not ready yet. Attempt $i/10"
             sleep 2
           done
@@ -52,12 +53,14 @@ jobs:
           
       - name: Functional test
         run: |
-            response=$(curl -fsS http://localhost:8080)
-            echo "Response received: "
-            echo $response
-            echo "$response" | grep -q "LAboratory 03"
-            echo "Functional test passed"
-            
+            if echo "$response" | grep -q "Laboratory 03" then
+              echo "Functional test passed"
+            else
+              echo "Functional test failed"
+              exit 1
+            fi
+
+      #Login to GHCR (storage to docker images in GitHub)
       - name: Login to GHCR
         uses: docker/login-action@v3
         with:
@@ -65,6 +68,7 @@ jobs:
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }} 
       
+      # Image TAG to know currently and previous versions artifact
       - name: Tag Docker image
         run: |
               docker tag \
@@ -76,7 +80,8 @@ jobs:
               ghcr.io/vessandoval/laboratory-03:${GITHUB_SHA:0:7}
               
               #ghcr.io/vessandoval/laboratory-03:${{ github.sha }}
-              
+
+      #List tagged images (only to show different references to same image (*Debug and validation)           
       - name: List tagged images
         run: |
           docker images | grep laboratory-03 
@@ -85,7 +90,7 @@ jobs:
         run: |
              docker push ghcr.io/vessandoval/laboratory-03:v1.0
              docker push ghcr.io/vessandoval/laboratory-03:${GITHUB_SHA:0:7}
-      
+      #v1.0 is not a permanent tag it requiere update each new release       
           
       #- name: Inspect container (ps, port, logs and Inspect)
       #  run: |
@@ -114,6 +119,6 @@ jobs:
       - name: Run clean environment
         if: always()
         run: |
-            docker stop laboratory-03
-            docker rm laboratory-03
+            # docker stop laboratory-03
+            docker rm -f laboratory-03 2>/dev/null || true
             
