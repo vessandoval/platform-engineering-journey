@@ -1,5 +1,4 @@
 # This pipeline is a typical example of a process to generate, test and push a docker container in GitHub Packages.
-
 name: pipeline-002
 
 on:
@@ -103,26 +102,62 @@ jobs:
             # docker logs laboratory-03
             # docker inspect laboratory-03 --format '{{.State.Status}} ExitCode={{.State.ExitCode}} Error={{.State.Error}}'
             # docker exec laboratory-03 ps aux
-            
-#      - name: Test container and view status container (BASH code impl)
-#        run: |
-#            for i in {1..10}; do
-#              if curl -f http://localhost:8080; then
-#                echo "Nginx i ready."
-#                exit 0
-#              fi
-#
-#              echo "Waiting for Nginx..."
-#              sleep 2
-#            done
-#
-#            echo "Nginx did not become ready"
-#            exit 1  
-    
       
       - name: Run clean environment
         if: always()
         run: |
             # docker stop laboratory-03
             docker rm -f laboratory-03 2>/dev/null || true
+            
+    deploy-dev:
+      needs: docker-ci
+      runs-on: ubuntu-latest
+
+      steps:      
+      - name: Pull Docker image
+        run: |
+          docker pull ghcr.io/vessandoval/laboratory-03:${GITHUB_SHA:0:7}
+
+      - name: Run DEV container
+        run: |
+          docker run -d -p 8080:80 --name laboratory-03-dev \
+          ghcr.io/vessandoval/laboratory-03:${GITHUB_SHA:0:7}
+
+      - name: Dev readiness check
+        run: |
+          for i in {1..10}; do
+            if curl -fsS http://localhost:8080 > /dev/null; then
+              echo "DEV container is ready"
+                exit 0
+            fi
+
+            echo "DEV container is not ready yet. Attempt $i/10"
+            sleep 2
+          done
+
+          echo "DEV container did not become ready"
+          exit 1
+
+      - name: DEV functional test
+        run: |
+          response=$(curl -fsS http://localhost:8080)
+
+          echo "Response received: "
+          echo "$response"
+
+          if echo "$response" | grep -q "Laboratory 03"; then
+            echo "DEV functional test passed"
+          else
+            echo "DEV functional test failed"
+            exit 1
+          fi
+
+      - name: DEV cleanup
+        if: always()
+        run: |
+            docker rm -f laboratory-03-dev 2>/dev/null || true  
+            
+        
+              
+              
             
