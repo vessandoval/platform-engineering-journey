@@ -13,6 +13,7 @@
   />
 </Context>
 
-#   Eliminación de la sección comentada para evitar conflictos con la configuración de la base de datos
-#    type="javax.sql.DataSource"
-#    factory="org.apache.tomcat.jdbc.pool.DataSourceFactory"
+<!--  Eliminación de la sección comentada para evitar conflictos con la configuración de la base de datos
+   type="javax.sql.DataSource"
+   factory="org.apache.tomcat.jdbc.pool.DataSourceFactory"
+--> 
