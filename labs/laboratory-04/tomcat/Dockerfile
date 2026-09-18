@@ -22,4 +22,4 @@ ADD https://repo1.maven.org/maven2/org/postgresql/postgresql/42.7.10/postgresql-
 #Esta línea es la que se encuentra en el archivo Dockerfile original, pero no es necesaria según la última actualización sugerida por chatGPT. Por lo tanto, se puede eliminar para evitar confusiones y mantener el archivo limpio y actualizado.
 #ADD https://jdbc.postgresql.org/download/postgresql-42.7.7.jar /usr/local/tomcat/lib/postgresql.jar
 
-COPY context.xml /usr/local/tomcat/conf/context.xml
+#COPY context.xml /usr/local/tomcat/conf/context.xml
