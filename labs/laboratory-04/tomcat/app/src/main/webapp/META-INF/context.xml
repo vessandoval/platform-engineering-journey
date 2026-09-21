@@ -4,7 +4,7 @@
     auth="Container"
     type="javax.sql.DataSource"
     driverClassName="org.postgresql.Driver"
-    url="jdbc:postgresql://${DB_HOST}:${DB_PORT}/${DB_NAME}"
+    url="jdbc:postgresql://postgres:5432/laboratory_bd"
     username="${DB_USER}"
     password="${DB_PASSWORD}"
     maxActive="20"
@@ -16,4 +16,5 @@
 <!--  Eliminación de la sección comentada para evitar conflictos con la configuración de la base de datos
    type="javax.sql.DataSource"
    factory="org.apache.tomcat.jdbc.pool.DataSourceFactory"
+   <url="jdbc:postgresql://${DB_HOST}:${DB_PORT}/${DB_NAME}">
 --> 
