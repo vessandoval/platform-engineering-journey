@@ -1,41 +1,4 @@
 services:
-  nginx:
-    image: nginx:alpine
-    container_name: laboratory-04-nginx
-
-    ports:
-      - "80:80"
-
-    volumes:
-      - ./nginx/nginx.conf:/etc/nginx/nginx.conf:ro      
-
-  tomcat:
-    #image: tomcat:10.1-jdk17-temurin sustituido por build para agregar el driver de postgres y el context.xml
-    build:
-      context: ./tomcat
-    
-    container_name: laboratory-04-tomcat
-    
-    environment:
-      DB_HOST: postgres
-      DB_PORT: 5432
-      DB_NAME: ${POSTGRES_DB}
-      DB_USER: ${POSTGRES_USER}
-      DB_PASSWORD: ${POSTGRES_PASSWORD}
-
-      CATALINA_OPTS: >-
-        -DDB_HOST=postgres
-        -DDB_PORT=5432
-        -DDB_NAME=${POSTGRES_DB}
-        -DDB_USER=${POSTGRES_USER}
-        -DDB_PASSWORD=${POSTGRES_PASSWORD}
-      #CATALINA_OPTS: >-
-      #  -Dorg.apache.tomcat.util.digester.PROPERTY_SOURCE=org.apache.tomcat.util.digester.EnvironmentPropertySource
-
-    depends_on:
-      postgres:
-        condition: service_healthy
-
   postgres:
     image: postgres:16
     container_name: laboratory-04-postgres
@@ -53,7 +16,46 @@ services:
       interval: 5s
       timeout: 5s
       retries: 5
-      start_period: 10s
+      start_period: 10s  
+
+  tomcat:
+    #image: tomcat:10.1-jdk17-temurin sustituido por build para agregar el driver de postgres y el context.xml
+    build:
+      context: ./tomcat
+    
+    container_name: laboratory-04-tomcat
+    
+    environment:
+      DB_HOST: postgres
+      DB_PORT: 5432
+      DB_NAME: ${POSTGRES_DB}
+      DB_USER: ${POSTGRES_USER}
+      DB_PASSWORD: ${POSTGRES_PASSWORD}
+
+      CATALINA_OPTS: >-
+        -Dorg.apache.tomcat.util.digester.PROPERTY_SOURCE=org.apache.tomcat.util.digester.EnvironmentPropertySource
+
+    #volumes:
+      #- ./tomcat/app/src/main/webapp/META-INF/context.xml:/usr/local/tomcat/conf/Catalina/localhost/laboratory-04.xml
+      #- ./tomcat/app/src/main/webapp/META-INF/context.xml:/usr/local/tomcat/conf/context.xml
+
+    depends_on:
+      postgres:
+        condition: service_started
+
+  nginx:
+    image: nginx:alpine
+    container_name: laboratory-04-nginx
+
+    ports:
+      - "80:80"
+
+    volumes:
+      - ./nginx/nginx.conf:/etc/nginx/nginx.conf:ro 
+
+    depends_on:
+      tomcat:
+        condition: service_healthy
 
 volumes:
   postgres-data:
