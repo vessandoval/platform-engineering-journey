@@ -11,6 +11,7 @@ FROM tomcat:10.1-jdk17-temurin
 
 WORKDIR /usr/local/tomcat
 
+#Esta línea podría requerirse en caso de que Tomcat no arranque mediante catalina.sh/startup.sh 
 #RUN echo "org.apache.tomcat.util.digester.PROPERTY_SOURCE=org.apache.tomcat.util.digester.EnvironmentPropertySource" >> /usr/local/tomcat/conf/catalina.properties   
 
 COPY --from=builder /build/target/laboratory-04.war \
