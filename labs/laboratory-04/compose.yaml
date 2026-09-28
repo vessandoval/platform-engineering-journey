@@ -27,15 +27,16 @@ services:
       DB_USER: ${POSTGRES_USER}
       DB_PASSWORD: ${POSTGRES_PASSWORD}
 
-      CATALINA_OPTS: >-
-        -DDB_HOST=postgres
-        -DDB_PORT=5432
-        -DDB_NAME=${POSTGRES_DB}
-        -DDB_USER=${POSTGRES_USER}
-        -DDB_PASSWORD=${POSTGRES_PASSWORD}
       #CATALINA_OPTS: >-
-      #  -Dorg.apache.tomcat.util.digester.PROPERTY_SOURCE=org.apache.tomcat.util.digester.EnvironmentPropertySource
-
+      #  -DDB_HOST=postgres
+      #  -DDB_PORT=5432
+      #  -DDB_NAME=${POSTGRES_DB}
+      #  -DDB_USER=${POSTGRES_USER}
+      #  -DDB_PASSWORD=${POSTGRES_PASSWORD}
+      CATALINA_OPTS: >-
+        -Dorg.apache.tomcat.util.digester.PROPERTY_SOURCE=org.apache.tomcat.util.digester.EnvironmentPropertySource
+      #  -/tomcat/app/src/main/webapp/META-INF/context.xml:/usr/local/tomcat/conf/Catalina/localhost/laboratory/laboratory-04.xml
+      #  -/tomcat/app/src/main/webapp/META-INF/context.xml:/usr/local/tomcat/conf/context.xml
     depends_on:
       postgres:
         condition: service_healthy
