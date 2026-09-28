@@ -10,6 +10,6 @@
     password="${DB_PASSWORD}"
     maxActive="20"
     maxIdle="10"
-    maxWait="1000"
-  />
+    maxWaitMillis="1000"
+    validationQuery="SELECT 1" />
 </Context>
