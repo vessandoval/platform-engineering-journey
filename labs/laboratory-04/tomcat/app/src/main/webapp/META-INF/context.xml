@@ -1,8 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
-
 <Context>
   <Resource
-    name="jdbc/laboratoryDB"
+    name="jdbc/LaboratoryDB"
     auth="Container"
     type="javax.sql.DataSource"
     driverClassName="org.postgresql.Driver"
