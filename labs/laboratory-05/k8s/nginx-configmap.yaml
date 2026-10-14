@@ -1,9 +1,0 @@
-apiVersion: v1
-kind: ConfigMap
-
-metadata:
-  name: laboratory-05-nginx-config
-
-data:
-  APP_NAME: "Laboratory 05"
-  ENVIRONMENT: "LOCAL-KUBERNETES"

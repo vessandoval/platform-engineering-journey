@@ -1,0 +1,8 @@
+apiVersion: v1
+kind: ConfigMap
+
+metadata:
+  name: laboratory-05-postgres-config
+
+data:
+  POSTGRES_DB: laboratory_bd

@@ -1,0 +1,56 @@
+apiVersion: apps/v1
+kind: StatefulSet
+
+metadata:
+  name: laboratory-05-postgres
+
+spec:
+  serviceName: laboratory-05-postgres
+
+  replicas: 1
+
+  selector:
+    matchLabels:
+      app: laboratory-05-postgres
+
+  template:
+    metadata:
+      labels:
+        app: laboratory-05-postgres
+
+    spec:
+      containers:
+        - name: postgres
+          image: postgres:16
+
+          ports:
+            - containerPort: 5432
+
+          env:
+            - name: POSTGRES_DB
+              valueFrom:
+                configMapKeyRef:
+                  name: laboratory-05-postgres-config
+                  key: POSTGRES_DB
+
+            - name: POSTGRES_USER
+              valueFrom:
+                secretKeyRef:
+                  name: laboratory-05-db-secret
+                  key: DB_USER
+
+            - name: POSTGRES_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: laboratory-05-db-secret
+                  key: DB_PASSWORD
+
+          volumeMounts:
+            - name: postgres-data
+              mountPath: /var/lib/postgresql/data
+
+      volumes:
+        - name: postgres-data
+          persistentVolumeClaim:
+            claimName: laboratory-05-postgres-data
+               

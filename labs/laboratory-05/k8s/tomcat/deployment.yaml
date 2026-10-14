@@ -1,0 +1,70 @@
+apiVersion: apps/v1
+kind: Deployment
+
+metadata:
+  name: laboratory-05-tomcat
+
+spec:
+  replicas: 1
+
+  selector:
+    matchLabels:
+      app: laboratory-05-tomcat
+
+  template:
+    metadata:
+      labels:
+        app: laboratory-05-tomcat
+
+    spec:
+      containers:
+       - name: tomcat
+         image: laboratory-05-tomcat:1.0
+         imagePullPolicy: IfNotPresent
+
+         ports:
+           - containerPort: 8080
+
+         env:           
+           - name: DB_HOST
+             value: "laboratory-05-postgres"
+
+           - name: DB_PORT
+             value: "5432"
+
+           - name: DB_NAME
+             valueFrom:
+               configMapKeyRef:
+                 name: laboratory-05-postgres-config
+                 key: POSTGRES_DB
+
+           - name: DB_USER
+             valueFrom:
+               secretKeyRef:
+                 name: laboratory-05-db-secret
+                 key: DB_USER
+
+           - name: DB_PASSWORD
+             valueFrom:
+               secretKeyRef:
+                 name: laboratory-05-db-secret
+                 key: DB_PASSWORD
+
+           - name: CATALINA_OPTS
+             value: >-
+               -Dorg.apache.tomcat.util.digester.PROPERTY_SOURCE=org.apache.tomcat.util.digester.EnvironmentPropertySource
+        
+         volumeMounts:
+           - name: tomcat-context
+             mountPath: /usr/local/tomcat/conf/Catalina/localhost/laboratory-04.xml
+             subPath: laboratory-04.xml
+             readOnly: true
+
+      volumes:
+        - name: tomcat-context
+          configMap:
+            name: laboratory-05-tomcat-context
+            items:
+              - key: laboratory-04.xml
+                path: laboratory-04.xml
+
